@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS rateLimit (
+  id TEXT PRIMARY KEY NOT NULL,
+  key TEXT NOT NULL UNIQUE,
+  count INTEGER NOT NULL DEFAULT 0,
+  lastRequest INTEGER NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_rateLimit_lastRequest ON rateLimit (lastRequest);

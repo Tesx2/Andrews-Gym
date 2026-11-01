@@ -58,6 +58,23 @@ export function createAuth(env: Env, waitUntil: (promise: Promise<unknown>) => v
         sendEmail({ to: user.email, subject: 'Verify your Andrews Gym email', text: `Confirm your new login email here:\n\n${url}\n\nIf you did not request this, ignore this email.` });
       }
     },
+    rateLimit: {
+      enabled: true,
+      storage: 'database',
+      window: 60,
+      max: 100,
+      customRules: {
+        '/sign-in/email': { window: 60, max: 5 },
+        '/sign-up/email': { window: 3600, max: 5 },
+        '/request-password-reset': { window: 60, max: 3 },
+        '/reset-password': { window: 60, max: 5 },
+        '/change-password': { window: 60, max: 5 },
+        '/change-email': { window: 3600, max: 3 }
+      }
+    },
+    advanced: {
+      ipAddress: { ipAddressHeaders: ['cf-connecting-ip'] }
+    },
     trustedOrigins: [env.BETTER_AUTH_URL],
     databaseHooks: {
       user: {
