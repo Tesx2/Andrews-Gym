@@ -1,1 +1,5 @@
 BETTER_AUTH_SECRET=replace-with-a-random-secret-at-least-32-characters
+
+# Optional auth email delivery (password resets and login email changes)
+RESEND_API_KEY=
+AUTH_FROM_EMAIL=Andrews Gym <auth@your-verified-domain.example>

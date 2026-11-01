@@ -8,6 +8,7 @@ const title = document.querySelector('#account-title');
 const intro = document.querySelector('#account-intro');
 const submit = document.querySelector('#account-submit');
 const switchLink = document.querySelector('#account-switch');
+const forgotLink = document.querySelector('#forgot-password-link');
 const password = document.querySelector('#password');
 
 async function postSignInPage() {
@@ -21,6 +22,7 @@ async function postSignInPage() {
 }
 
 if (mode === 'signup') {
+  forgotLink.hidden = true;
   nameField.hidden = false;
   document.querySelector('#name').required = true;
   title.textContent = 'JOIN THE GYM.';
@@ -32,6 +34,7 @@ if (mode === 'signup') {
   switchLink.innerHTML = 'Already have an account? <a href="account.html">Sign in</a>';
 } else {
   switchLink.innerHTML = 'New to Andrews Gym? <a href="account.html?mode=signup">Create an account</a>';
+  if (new URLSearchParams(location.search).get('reset') === 'success') message.textContent = 'Password updated. Sign in with your new password.';
 }
 
 form.addEventListener('submit', async (event) => {

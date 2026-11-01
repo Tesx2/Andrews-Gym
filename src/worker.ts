@@ -15,9 +15,11 @@ app.use('/api/*', async (c, next) => {
     try { expectedOrigin = new URL(c.env.BETTER_AUTH_URL).origin; } catch { /* Auth configuration reports the invalid URL. */ }
     if (!origin || origin !== expectedOrigin) return c.json({ error: 'Request origin is not allowed.' }, 403);
   }
-  c.set('auth', createAuth(c.env));
+  c.set('auth', createAuth(c.env, (promise) => c.executionCtx.waitUntil(promise)));
   await next();
 });
+
+app.get('/api/auth-status', (c) => c.json({ emailReady: Boolean(c.env.RESEND_API_KEY && c.env.AUTH_FROM_EMAIL) }));
 
 async function currentUser(c: AppContext) {
   const result = await c.get('auth').api.getSession({ headers: c.req.raw.headers });

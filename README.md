@@ -45,15 +45,16 @@ Create an account using the signup page. In the Cloudflare D1 console, promote t
 1. Create the D1 database and set its ID in `wrangler.jsonc`.
 2. Apply the D1 migration to the remote database with `npm run db:remote`.
 3. Set `BETTER_AUTH_URL` in the production Worker vars to the real HTTPS domain, and set the auth secret with `npx wrangler secret put BETTER_AUTH_SECRET`.
-4. Build and deploy with `npm run deploy`.
-5. Create the first admin account and promote it in the D1 console as above.
+4. In Resend, verify a sending domain and create an API key. Store these directly in Cloudflare (never commit them): `npx wrangler secret put RESEND_API_KEY` and `npx wrangler secret put AUTH_FROM_EMAIL` (for example, `Andrews Gym <auth@your-domain>`).
+5. Build and deploy with `npm run deploy`. Password reset and login email changes stay disabled in the UI until both Resend settings exist.
+6. Create the first admin account and promote it in the D1 console as above.
 
 ## Owner details still needed
 
 - Exact gym location, opening hours, public contact details, and preferred language (German, English, or both).
 - Confirmed membership tier names, prices, inclusions, joining/cancellation terms, and whether signup should be open or invite-only.
 - Gym logo and real photos.
-- Password-reset and email-verification sender/domain. Better Auth email/password sign-in works, but the email sender has not been configured.
+- Resend API key and a verified sender domain for password resets and login email changes. The application checks these settings before enabling email-based recovery.
 - Shop products, photography, stock, tax/VAT rules, fulfilment (pickup or delivery), shipping prices, and payment provider credentials. Until those are known, customers cannot submit paid orders.
 - Production domain and required business/legal page content before launch.
 
