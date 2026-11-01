@@ -10,6 +10,16 @@ const submit = document.querySelector('#account-submit');
 const switchLink = document.querySelector('#account-switch');
 const password = document.querySelector('#password');
 
+async function postSignInPage() {
+  try {
+    await apiFetch('/api/admin/stats');
+    return 'admin.html';
+  } catch (error) {
+    if (error instanceof Error && error.message === 'Admin access required.') return 'member.html';
+    throw error;
+  }
+}
+
 if (mode === 'signup') {
   nameField.hidden = false;
   document.querySelector('#name').required = true;
@@ -39,7 +49,7 @@ form.addEventListener('submit', async (event) => {
     } else {
       const result = await authClient.signIn.email({ email: String(data.get('email')), password: String(data.get('password')) });
       if (result.error) throw new Error(result.error.message || 'Unable to sign in.');
-      location.href = 'member.html';
+      location.href = await postSignInPage();
     }
   } catch (error) {
     message.classList.add('error');
